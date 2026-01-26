@@ -1,11 +1,41 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
+import { useStorage } from '@/app/storage';
 
 export default function AddDepartmentModal(params){
+    const [deptName,setDeptName] = useState("");
+    const [courseInDept,setCourseInDept] = useState([]);
 
+    const courses = useStorage((state) => state.courses);
+    const addDepartment = useStorage((state) => state.addDepartment)
+
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => {
+      setIsHydrated(true);
+    }, []);
+    
+    const handleToggle = (id,isChecked) => {
+        if (isChecked)
+            setCourseInDept([...courseInDept,id])
+        else 
+            setCourseInDept(courseInDept.filter((courseId) => courseId !== id ));
+    }
+
+    const handleAdd = () => {
+        if(!deptName){
+            alert("Please enter a department name");
+            return
+        }
+        addDepartment({deptName , courseInDept})
+        setDeptName("");
+        setCourseInDept([]);
+        params.onClose();
+    }
+
+    if (!isHydrated) return null;
     if (!params.isOpen) return null;
 
     return(
@@ -32,12 +62,38 @@ export default function AddDepartmentModal(params){
                 {/* Scrollable Form Content */}
                 <div className="p-8">
                     <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                    <InputWithLabel labelName="Department Name" type="text" placeholder="Electrical" />
+                    <InputWithLabel labelName="Department Name" type="text" placeholder="Electrical" onChange={(e) => setDeptName(e.target.value)} />
+                    <div className="space-y-3">
+      <label className="text-sm font-semibold text-slate-700">Select Courses for Department</label>
+      
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {courses.map((course) => (
+                <label 
+                  key={course.id} 
+                  className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition-colors border-slate-200 has-:checked:border-blue-500 has-:checked:bg-blue-50"
+                >
+                  {/* The Hidden Native Checkbox */}
+                  <input 
+                    type="checkbox"
+                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    value={course.id}
+                    onChange={(e) => handleToggle(course.id,e.target.checked)}
+                  />
+
+                  {/* The Course Label */}
+                  <div className="ml-3">
+                    <span className="block text-sm font-medium text-slate-900">{course.name}</span>
+                  </div>
+                </label>
+              ))}
+            </div>
+            {/* Fallback if no courses exist */}
+            {courses.length === 0 && (
+              <p className="text-sm text-slate-400 italic">No courses created yet.</p>
+            )}
+            </div>
                     <div className="pt-4">
-                        <SaveNextButton text="Save Department" />
-                    </div>
-                    <div>
-                        {/* Existing  course for the department will be added here somehow */}
+                        <SaveNextButton text="Save Department" onClick={handleAdd} />
                     </div>
                     </form>
                 </div>

@@ -5,11 +5,15 @@ import { useState } from 'react';
 import AddButton from '@/app/components/add';
 import AddFacultyModal from './AddFacultyModal';
 import { GraduationCap } from 'lucide-react';
+import { useStorage } from '@/app/storage';
+import DeleteButton from '../delete';
 
 export default function Faculty() {
-    const [facultys, setFacultys] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
-return(
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const facultys = useStorage((state) => state.facultys);
+    const removeFaculty = useStorage((state) => state.removeFaculty);
+
+    return(
         <div className="space-y-6 p-6">
           {/* 1. Header Section */}
      <div className="flex justify-between items-center">
@@ -32,17 +36,50 @@ return(
             <div className="p-8">
               {facultys.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
-                  <div className="bg-slate-100 p-4 rounded-full mb-4">
+                  <div className="bg-slate-200 p-4 rounded-full mb-4">
                     <Inbox size={40} />
                   </div>
                   <p className="text-lg font-medium">No Faculty entered</p>
                   <p className="text-sm">Click the Add button to create your first Faculty</p>
                 </div>
-              ) : (
-                <div className="grid gap-4">
-                  {facultys.map((faculty, index) => (
-                    <div key={index} className="p-4 border border-slate-200 rounded-lg">
-                      {faculty.name}
+              ) : (<div className="grid gap-4 md:grid-cols-3">
+                  {facultys.map((faculty) => (
+                    <div 
+                      key={faculty.id} 
+                      className="group relative flex items-center p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300"
+                    >
+                    
+                      {/* 2. Middle: Name & Designation */}
+                      <div className="ml-5 grow">
+                        <h3 className="text-lg font-bold text-slate-800 leading-tight">
+                          {faculty.name}
+                        </h3>
+                        <p className="text-sm font-medium text-indigo-600">
+                          {faculty.designation}
+                        </p>
+
+                        {/* 3. Bottom Row: Dept & Hours */}
+                        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-50">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Initials</span>
+                            <span className="text-sm text-slate-700 font-semibold">{faculty.initial}</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Department</span>
+                            <span className="text-sm text-slate-700 font-semibold">{faculty.dept}</span>
+                          </div>
+                          <div className="w-px h-6 bg-slate-200"></div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Contact Hours</span>
+                            <span className="text-sm text-slate-700 font-semibold">{faculty.hours} hrs/week</span>
+                          </div>
+                        </div>
+                      </div>
+                  
+                      {/* 4. Delete Action (Hidden until hover) */}
+                      <div className="absolute top-4 right-4">
+                        <DeleteButton onDelete={() => removeFaculty(faculty.id)} />
+                      </div>
                     </div>
                   ))}
                 </div>

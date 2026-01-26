@@ -1,18 +1,44 @@
 // src/app/components/AddCourseModal.js
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
+import { useStorage } from '@/app/storage';
 
 
 export default function AddCourseModal(params) {
   // If the modal is not open, render nothing
-    const [courseName,setCourseName] = useState("");  
-    const [courseStartingTime,setCourseStartingTime] = useState("");    
-    const [courseSlots,setCourseSlots] = useState(null);    
-    const [courseLunchSlot,setLunchSlot] = useState(null);  
+    const [name,setName] = useState(""); 
+    const [year, setYear] = useState(null);
+    const [startingTime,setStartingTime] = useState();    
+    const [slots,setSlots] = useState(null);    
+    const [slotDuration, setSlotDuration] = useState(null);
+    const [lunchSlot,setLunchSlot] = useState(null);
 
+    const addCourse = useStorage((state) => state.addCourse);
+
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => {
+      setIsHydrated(true);
+    }, []);
+
+    const handleAdd = () => {
+      if (!name || !year || !startingTime || !slots || !lunchSlot || !slotDuration){
+        alert("Please enter all the fields")
+        return
+      }
+      addCourse({name, year, startingTime, slots, lunchSlot, slotDuration});
+      setName("");
+      setYear(null);
+      setStartingTime();
+      setSlots(null);
+      setSlotDuration(null)
+      setLunchSlot(null);
+      params.onClose();
+    }
+
+  if (!isHydrated) return null;
   if (!params.isOpen) return null;
 
   return (
@@ -40,20 +66,23 @@ export default function AddCourseModal(params) {
         {/* Scrollable Form Content */}
         <div className="p-8">
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-            <InputWithLabel labelName="Course Name" type="text" placeholder="e.g. B.Tech" />
+              <div className="grid grid-cols-2 gap-4">
+                <InputWithLabel labelName="Course Name" type="text" placeholder="e.g. B.Tech" onChange={(e) => setName(e.target.value)} />
+                <InputWithLabel labelName="Number of Years in Course" type="number" placeholder="4" onChange={(e) => setYear(e.target.value)} />
+              </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <InputWithLabel labelName="Starting Time" type="time" />
-                <InputWithLabel labelName="Slot Length (hours)" type="number" placeholder="1/1.5" />
+                <InputWithLabel labelName="Starting Time" type="time" onChange={(e) => setStartingTime(e.target.value)} />
+                <InputWithLabel labelName="Slot Length (hours)" type="number" placeholder="1/1.5" onChange={(e) =>setSlotDuration(e.target.value)} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <InputWithLabel labelName="Slots Per Day" type="number" placeholder="8" />
-                <InputWithLabel labelName="Break Slot Number" type="number" placeholder="4" />
+                <InputWithLabel labelName="Slots Per Day" type="number" placeholder="8" onChange={(e) => setSlots(e.target.value)}/>
+                <InputWithLabel labelName="Break Slot Number" type="number" placeholder="4" onChange={(e) => setLunchSlot(e.target.value)} />
             </div>
 
             <div className="pt-4">
-                <SaveNextButton text="Save Course" />
+                <SaveNextButton text="Save Course" onClick={handleAdd} />
             </div>
             </form>
         </div>

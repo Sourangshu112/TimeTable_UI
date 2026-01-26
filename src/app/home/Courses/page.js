@@ -6,10 +6,15 @@ import { useState } from 'react';
 import AddButton from '@/app/components/add';
 import AddCourseModal from './AddCourseModal';
 import { BookOpen } from 'lucide-react';
+import { useStorage } from '@/app/storage';
+import DeleteButton from '../delete';
 
 export default function CoursesPage() {
-  const [courses, setCourses] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const courses = useStorage((state) => state.courses);
+  const removeCourse = useStorage((state) => state.removeCourse);
+
 
   return (
     <div className="space-y-6 p-6">
@@ -43,13 +48,62 @@ export default function CoursesPage() {
               <p className="text-sm">Click the Add button to create your first course.</p>
             </div>
           ) : (
-            <div className="grid gap-4">
-              {courses.map((course, index) => (
-                <div key={index} className="p-4 border border-slate-200 rounded-lg">
-                  {course.name}
-                </div>
-              ))}
+<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  {courses.map((course) => (
+    
+    <div 
+      key={course.id} 
+      className="bg-white rounded-xl border border-slate-400 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+    >
+      {/* Header Section */}
+      {console.log(courses)}
+            <div className="bg-slate-50 p-4 border-b border-slate-400 flex justify-between">
+              <h3 className="text-lg font-bold text-slate-800 tracking-tight">
+                {course.name}
+              </h3>
+              <div className="top-3 left-3">
+                <DeleteButton onDelete={() => removeCourse(course.id)} />
+              </div>
             </div>
+            {/* Details Grid */}
+            <div className="p-5 grid grid-cols-2 gap-y-4 gap-x-6">
+
+              {/* Item 1 */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Years</span>
+                <span className="text-slate-700 font-medium">{course.year}</span>
+              </div>
+              
+              {/* Item 2 */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Start Time</span>
+                <span className="text-slate-700 font-medium">{course.startingTime}</span>
+              </div>
+        
+              {/* Item 3 */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Duration(hrs)</span>
+                <span className="text-slate-700 font-medium">{course.slotDuration} hr</span>
+              </div>
+        
+              {/* Item 4 */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Classes per Day</span>
+                <span className="text-slate-700 font-medium">{course.slots}</span>
+              </div>
+        
+              {/* Item 5 */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Lunch Break</span>
+                <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-amber-100 text-amber-800 w-fit">
+                  Slot {course.lunchSlot}
+                </span>
+              </div>
+        
+            </div>
+            </div>
+          ))}
+        </div>
           )}
         </div>
       </div>

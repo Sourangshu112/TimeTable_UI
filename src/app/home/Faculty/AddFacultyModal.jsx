@@ -1,11 +1,40 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
+import { useStorage } from '@/app/storage';
 
 export default function AddFacultyModal(params){
+    const [name, setName] = useState("");
+    const [initial, setInitial] = useState("");
+    const [dept, setDept] = useState("");
+    const [designation, setDesignation] = useState("");
+    const [hours, setHours] = useState("");
 
+    const addFaculty =  useStorage((state) => state.addFaculty);
+
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => {
+      setIsHydrated(true);
+    }, []);
+
+    const handleAdd = () => {
+        if(!name || !initial || !dept || !designation || !hours){
+            alert("Please enter all the fields");
+            return
+        }
+        addFaculty({name, initial, dept, designation, hours})
+        setName("");
+        setInitial("");
+        setDept("");
+        setDesignation("");
+        setHours("");
+        params.onClose();
+    }
+
+
+    if (!isHydrated) return null;
     if (!params.isOpen) return null;
 
     return(
@@ -32,17 +61,17 @@ export default function AddFacultyModal(params){
                 {/* Scrollable Form Content */}
                 <div className="p-8">
                     <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                    <InputWithLabel labelName="Faculty Name" type="text" placeholder="Dr Bikarna Tarafdar" />
+                    <InputWithLabel labelName="Faculty Name" type="text" placeholder="Dr Bikarna Tarafdar" onChange={(e) => setName(e.target.value)} />
                     <div className="grid grid-cols-2 gap-4">
-                        <InputWithLabel labelName="Faculty Initials" type="text" placeholder="BT" />
-                        <InputWithLabel labelName="Department" type="text" placeholder="Mathematics" />                        
+                        <InputWithLabel labelName="Faculty Initials" type="text" placeholder="BT" onChange={(e) => setInitial(e.target.value)} />
+                        <InputWithLabel labelName="Department" type="text" placeholder="Mathematics" onChange={(e) => setDept(e.target.value)} />                        
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <InputWithLabel labelName="Designation" type="text" placeholder="Assistant Professor" />
-                        <InputWithLabel labelName="Lecture hrs per week" type="number" placeholder="8" />                        
+                        <InputWithLabel labelName="Designation" type="text" placeholder="Assistant Professor" onChange={(e) => setDesignation(e.target.value)} />
+                        <InputWithLabel labelName="Lecture hrs per week" type="number" placeholder="8" onChange={(e) => setHours(e.target.value)} />                        
                     </div>
                     <div className="pt-4">
-                        <SaveNextButton text="Save Faculty" />
+                        <SaveNextButton text="Save Faculty" onClick={handleAdd} />
                     </div>
                     <div>
                         {/* Existing  course for the department will be added here somehow */}

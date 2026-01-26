@@ -5,11 +5,16 @@ import { useState } from 'react';
 import AddButton from '@/app/components/add';
 import AddSubjectModal from './AddSubjectModal';
 import { BookMarked } from 'lucide-react';
+import { useStorage } from '@/app/storage';
+import DeleteButton from '../delete';
 
 export default function Subjects() {
-    const [subjects, setSubjects] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
-return(
+
+    const subjects = useStorage((state) => state.subjects);
+    const removeSubject = useStorage((state) => state.removeSubject);
+
+    return(
     <div className="space-y-6 p-6">
           {/* 1. Header Section */}
      <div className="flex justify-between items-center">
@@ -39,10 +44,49 @@ return(
                   <p className="text-sm">Click the Add button to create your first Subject</p>
                 </div>
               ) : (
-                <div className="grid gap-4">
-                  {subjects.map((subject, index) => (
-                    <div key={index} className="p-4 border border-slate-200 rounded-lg">
-                      {subject.name}
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                {subjects.map((subject) => (
+
+                <div 
+                  key={subject.id} 
+                  className="bg-white rounded-xl border border-slate-400 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+                >
+              
+                    <div className="bg-slate-50 p-4 border-b border-slate-400 flex justify-between">
+                      <h3 className="text-lg font-bold text-slate-800 tracking-tight">
+                        {subject.name}
+                      </h3>
+                      <div className="top-3 left-3">
+                        <DeleteButton onDelete={() => removeSubject(subject.id)} />
+                      </div>
+                    </div>
+                    {/* Details Grid */}
+                    <div className="p-5 grid grid-cols-2 gap-y-4 gap-x-6">
+          
+                      {/* Item 1 */}
+                      <div className="flex flex-col">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">CODE</span>
+                        <span className="text-slate-700 font-medium">{subject.code}</span>
+                      </div>
+
+                      {/* Item 2 */}
+                      <div className="flex flex-col">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Departmemt</span>
+                        <span className="text-slate-700 font-medium">{subject.dept}</span>
+                      </div>
+
+                      {/* Item 3 */}
+                      <div className="flex flex-col">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Type</span>
+                        <span className="text-slate-700 font-medium">{subject.type}</span>
+                      </div>
+
+                      {/* Item 4 */}
+                      <div className="flex flex-col">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Hrs/Week</span>
+                        <span className="text-slate-700 font-medium">{subject.hours} hr</span>
+                      </div>
+                    </div>
                     </div>
                   ))}
                 </div>
