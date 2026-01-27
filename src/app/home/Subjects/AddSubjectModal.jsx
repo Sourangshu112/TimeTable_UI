@@ -12,17 +12,19 @@ export default function AddSubjectModal(params){
     const [type,setType] = useState("");
     const [hours,setHours] = useState();
 
+    const subjects = useStorage((state) => state.subjects);
     const addSubject = useStorage((state) => state.addSubject);
-    const [isHydrated, setIsHydrated] = useState(false);
-    useEffect(() => {
-      setIsHydrated(true);
-    }, []);
 
     const handleAdd = () => {
       if (!name || !code || !dept || !type || !hours){
         alert("Please enter all the fields")
         return
       }
+      if(subjects.find(s => s.id === code)){
+        alert("Slready Exists");
+        return;
+      }
+
       addSubject({name, code, dept , type, hours});
       setName("");
       setCode("");
@@ -32,7 +34,6 @@ export default function AddSubjectModal(params){
       params.onClose();
     }
 
-    if (!isHydrated) return null;
     if (!params.isOpen) return null;
 
     return(

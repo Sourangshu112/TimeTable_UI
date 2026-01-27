@@ -12,18 +12,20 @@ export default function AddFacultyModal(params){
     const [designation, setDesignation] = useState("");
     const [hours, setHours] = useState("");
 
+    const facultys = useStorage((state) => state.facultys);
     const addFaculty =  useStorage((state) => state.addFaculty);
-
-    const [isHydrated, setIsHydrated] = useState(false);
-    useEffect(() => {
-      setIsHydrated(true);
-    }, []);
 
     const handleAdd = () => {
         if(!name || !initial || !dept || !designation || !hours){
             alert("Please enter all the fields");
-            return
+            return;
         }
+
+        if(facultys.find(f => f.id === initial)){
+            alert("Already exixts");
+            return;
+        }
+
         addFaculty({name, initial, dept, designation, hours})
         setName("");
         setInitial("");
@@ -34,7 +36,6 @@ export default function AddFacultyModal(params){
     }
 
 
-    if (!isHydrated) return null;
     if (!params.isOpen) return null;
 
     return(

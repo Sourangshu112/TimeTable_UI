@@ -16,18 +16,20 @@ export default function AddCourseModal(params) {
     const [slotDuration, setSlotDuration] = useState(null);
     const [lunchSlot,setLunchSlot] = useState(null);
 
+    const courses = useStorage((state) => state.courses);
     const addCourse = useStorage((state) => state.addCourse);
-
-    const [isHydrated, setIsHydrated] = useState(false);
-    useEffect(() => {
-      setIsHydrated(true);
-    }, []);
 
     const handleAdd = () => {
       if (!name || !year || !startingTime || !slots || !lunchSlot || !slotDuration){
         alert("Please enter all the fields")
         return
       }
+
+      if (courses.find(c => c.id === name)){
+        alert("Already exists");
+        return;
+      }
+      
       addCourse({name, year, startingTime, slots, lunchSlot, slotDuration});
       setName("");
       setYear(null);
@@ -38,7 +40,6 @@ export default function AddCourseModal(params) {
       params.onClose();
     }
 
-  if (!isHydrated) return null;
   if (!params.isOpen) return null;
 
   return (

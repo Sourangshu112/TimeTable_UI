@@ -1,14 +1,60 @@
 'use client'
 
 import { Inbox } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AddButton from '@/app/components/add';
 import { Users } from 'lucide-react';
+import { useStorage } from '@/app/storage';
+import DeleteButton from '../delete';
+import AddSectionModal from './AddSectionModal';
 
 export default function Section() {
-    const [sections, setSections] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const courses = useStorage((state) => state.courses);
+    const departments = useStorage((state) => state.departments);
+    const autoSections = useStorage((state) => state.autoSections);
+    const addAutoSection = useStorage((state) => state.addAutoSection);
+    const removeAutoSection = useStorage((state) => state.removeAutoSection);
+    const sections = useStorage((state) => state.sections);
+    const removeSection = useStorage((state) => state.removeSection);
 
+    useEffect(() => {
+        // 3. The "Guard Clause": Only run if sections object is empty
+        if (autoSections.length > 0) return;
+
+        // Your logic to create batches
+        const createBatches = () => {
+             const formattedCourses = courses.map(course => ({
+                name: course.name,
+                year: parseInt(course.year)
+             }));
+
+             departments.forEach(dept => {
+                 dept.courseInDept.forEach(courseName => {
+                     const match = formattedCourses.find(c => c.name === courseName);
+                     if (match) {
+                         for (let i = 1; i <= match.year; i++) {
+                              const obj = {
+                                 course: match.name,
+                                 department: dept.deptName,
+                                 year: i,
+                                 Group: "A",
+                                 id: `${match.name}-${dept.deptName}-${i}-A`
+                             };
+                              if (autoSections.find(s => s.id === obj.id)){
+                                continue;
+                              }
+                             addAutoSection(obj);
+                         }
+                     }
+                 });
+             });
+        };
+
+        createBatches();
+
+    }, [courses, departments, addAutoSection, autoSections]);
+    
     return(
         <div className="space-y-6 p-6">
           {/* 1. Header Section */}
@@ -31,7 +77,7 @@ export default function Section() {
             </div>
 
             <div className="p-8">
-              {sections.length === 0 ? (
+              {(autoSections.length === 0 && sections.length === 0) ? (
                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                   <div className="bg-slate-100 p-4 rounded-full mb-4">
                     <Inbox size={40} />
@@ -40,23 +86,106 @@ export default function Section() {
                   <p className="text-sm">Click the Add button to create your first section</p>
                 </div>
               ) : (
-                <div className="grid gap-4">
-                  {sections.map((section, index) => (
-                    <div key={index} className="p-4 border border-slate-200 rounded-lg">
-                      {section.name}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {autoSections.length > 0 && (
+                    <div className="col-span-full mb-2">
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                        Auto-Generated Sections
+                      </h3>
                     </div>
-                  ))}
-                </div>
+                  )}
+                {autoSections.map((section) => (
+                  <div 
+                    key={section.id} 
+                    className="p-5 bg-white border border-slate-400 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-1"
+                  >
+                    {/* Header: Course & Department */}
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-800">
+                          {section.course}
+                        </h3>
+                        <p className="text-sm font-medium text-slate-800">
+                          {section.department} Department
+                        </p>
+                      </div>
+
+                      {/* Group Badge */}
+                      <div>
+                        <DeleteButton onDelete={()=> removeAutoSection(section.id)} />
+                      </div>
+                    </div>                
+                    {/* Details: Year & ID */}
+                    <div className="flex justify-between items-center mt-auto">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-slate-800 uppercase font-semibold">Year</span>
+                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
+                          {section.year}
+                        </span>
+                      <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-full border border-blue-100">
+                        Group {section.Group}
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                  {sections.length > 0 && (
+                    <div className="col-span-full mt-8 mb-2">
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                        Manually Added Sections
+                      </h3>
+                    </div>
+                  )}
+                  {sections.map((section) => (
+                  <div 
+                    key={section.id} 
+                    className="p-5 bg-white border border-slate-400 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-1"
+                  >
+                    {/* Header: Course & Department */}
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-800">
+                          {section.course}
+                        </h3>
+                        <p className="text-sm font-medium text-slate-800">
+                          {section.department} Department
+                        </p>
+                      </div>
+
+                      {/* Group Badge */}
+                      <div>
+                        <DeleteButton onDelete={()=> removeSection(section.id)} />
+                      </div>
+                    </div>                
+                    {/* Details: Year & ID */}
+                    <div className="flex justify-between items-center mt-auto">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-slate-800 uppercase font-semibold">Year</span>
+                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
+                          {section.year}
+                        </span>
+                      <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-full border border-blue-100">
+                        Group {section.Group}
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+                }
+              </div>
               )}
             </div>
           </div>
 
           {/* 3. The Modal Component */}
           {/* It sits here but is invisible until isModalOpen is true */}
-          {/* <AddDepartmentModal
+          <AddSectionModal
             isOpen={isModalOpen} 
             onClose={() => setIsModalOpen(false)} 
-          /> */}
+          />
 
         </div>
         )

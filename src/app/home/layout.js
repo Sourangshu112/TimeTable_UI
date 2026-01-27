@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
         <Header />
 
         {/* Scrollable Content Area */}
-        <main>
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
       </div>

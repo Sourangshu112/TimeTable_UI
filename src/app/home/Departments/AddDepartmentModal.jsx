@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
@@ -10,12 +10,8 @@ export default function AddDepartmentModal(params){
     const [courseInDept,setCourseInDept] = useState([]);
 
     const courses = useStorage((state) => state.courses);
+    const departments = useStorage((state) => state.departments);
     const addDepartment = useStorage((state) => state.addDepartment)
-
-    const [isHydrated, setIsHydrated] = useState(false);
-    useEffect(() => {
-      setIsHydrated(true);
-    }, []);
     
     const handleToggle = (id,isChecked) => {
         if (isChecked)
@@ -29,13 +25,17 @@ export default function AddDepartmentModal(params){
             alert("Please enter a department name");
             return
         }
+        if(departments.find(d => d.id === deptName)){
+          alert("Already exists");
+          return;
+        }
+
         addDepartment({deptName , courseInDept})
         setDeptName("");
         setCourseInDept([]);
         params.onClose();
     }
 
-    if (!isHydrated) return null;
     if (!params.isOpen) return null;
 
     return(

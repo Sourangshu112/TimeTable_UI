@@ -9,11 +9,10 @@ import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
 
 export default function Department() {
-    //const [departments, setDepartments] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
 
-    const departments = useStorage((state) => state.departments)
-    const removeDepartment = useStorage((state) => state.removeDepartment)
+    const departments = useStorage((state) => state.departments);
+    const removeDepartment = useStorage((state) => state.removeDepartment);
     
     return(
         <div className="space-y-6 p-6">
@@ -46,11 +45,11 @@ export default function Department() {
                   <p className="text-sm">Click the Add button to create your first Department</p>
                 </div>
               ) : (
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid gap-6 md:grid-cols-3">
                 {departments.map((dept) => (
               <div 
                 key={dept.id} 
-                className="flex flex-col p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-blue-300 transition-colors"
+                className="flex flex-col p-5 bg-white border border-slate-400 rounded-xl shadow-sm hover:border-blue-300 transition-colors"
               >
                 {/* Department Header */}
                 <div className="flex items-center justify-between gap-3">

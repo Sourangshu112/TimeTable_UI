@@ -37,7 +37,7 @@ export const useStorage = create(
       //ACTIONS
       addDepartment: (dept) => 
         set((state) => ({
-          departments: [...state.departments,{...dept, id: dept.name}]
+          departments: [...state.departments,{...dept, id: dept.deptName}]
         })),
         
       removeDepartment: (id) => 
@@ -73,11 +73,35 @@ export const useStorage = create(
           subjects: state.subjects.filter((subject) => subject.id !== id)
         })),
 
+      // Classes/section
+      autoSections: [],
+      //ACTION
+      addAutoSection: (section) => 
+        set((state) => ({
+          autoSections: [...state.autoSections,{...section}]
+        })),
+
+      removeAutoSection: (id) => 
+        set((state) => ({
+          autoSections: state.autoSections.filter((section) => section.id !== id)
+        })),
+
+
+      sections: [],
+      //ACTION
+      addSection: (section) => 
+        set((state) => ({
+          sections: [...state.sections,{...section}]
+        })),
+
+      removeSection: (id) => 
+        set((state) => ({
+          sections: state.sections.filter((section) => section.id !== id)
+        })),
     }),
     {
       name: 'timetable-storage', // Unique key in localStorage
       storage: createJSONStorage(() => localStorage),
-      skipHydration: true, // Helps prevent Next.js hydration mismatch errors
     }
   )
 );
