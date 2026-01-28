@@ -24,6 +24,7 @@ export default function Faculty() {
           <div>
               <h2 className="text-xl font-bold text-slate-800">Faculty</h2>
               <p className="text-sm text-slate-500">Manage the Facultys</p>
+              <p className="text-sm text-slate-500">NOTE: While Adding Faculty please donot reuse the initials, keep them unique</p>
             </div>
             </div>
             <AddButton text="Facultys" onClick={() => setIsModalOpen(true)} />
@@ -42,11 +43,11 @@ export default function Faculty() {
                   <p className="text-lg font-medium">No Faculty entered</p>
                   <p className="text-sm">Click the Add button to create your first Faculty</p>
                 </div>
-              ) : (<div className="grid gap-4 md:grid-cols-3">
+              ) : (<div className="grid gap-4 md:grid-cols-3 border-slate-200">
                   {facultys.map((faculty) => (
                     <div 
                       key={faculty.id} 
-                      className="group relative flex items-center p-5 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300"
+                      className="group relative flex items-center p-5 bg-white border border-slate-400 rounded-2xl shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300"
                     >
                     
                       {/* 2. Middle: Name & Designation */}

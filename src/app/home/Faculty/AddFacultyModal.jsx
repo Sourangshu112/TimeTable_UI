@@ -21,12 +21,19 @@ export default function AddFacultyModal(params){
             return;
         }
 
-        if(facultys.find(f => f.id === initial)){
+        if(facultys.find(f => f.id === initial.toUpperCase())){
             alert("Already exixts");
             return;
         }
-
-        addFaculty({name, initial, dept, designation, hours})
+        const obj = {
+            name: name,
+            initial: initial.toUpperCase(),
+            dept: dept,
+            designation: designation,
+            hours: hours,
+            id: initial.toUpperCase(),
+        }
+        addFaculty(obj)
         setName("");
         setInitial("");
         setDept("");

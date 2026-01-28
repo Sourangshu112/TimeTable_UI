@@ -13,15 +13,13 @@ export default function Section() {
     const courses = useStorage((state) => state.courses);
     const departments = useStorage((state) => state.departments);
     const autoSections = useStorage((state) => state.autoSections);
+    const deletedBatchIds = useStorage((state) => state.deletedBatchIds);
     const addAutoSection = useStorage((state) => state.addAutoSection);
     const removeAutoSection = useStorage((state) => state.removeAutoSection);
     const sections = useStorage((state) => state.sections);
     const removeSection = useStorage((state) => state.removeSection);
 
     useEffect(() => {
-        // 3. The "Guard Clause": Only run if sections object is empty
-        if (autoSections.length > 0) return;
-
         // Your logic to create batches
         const createBatches = () => {
              const formattedCourses = courses.map(course => ({
@@ -41,10 +39,9 @@ export default function Section() {
                                  Group: "A",
                                  id: `${match.name}-${dept.deptName}-${i}-A`
                              };
-                              if (autoSections.find(s => s.id === obj.id)){
-                                continue;
-                              }
-                             addAutoSection(obj);
+                              if (autoSections.find(s => s.id === obj.id)) continue;
+                              if (deletedBatchIds.includes(obj.id)) continue;
+                              addAutoSection(obj);
                          }
                      }
                  });

@@ -25,12 +25,21 @@ export default function AddCourseModal(params) {
         return
       }
 
-      if (courses.find(c => c.id === name)){
+      if (courses.find(c => c.id === name.toUpperCase())){
         alert("Already exists");
         return;
       }
+      const obj = {
+        name: name.toUpperCase(),
+        year: year,
+        startingTime: startingTime,
+        slots: slots,
+        lunchSlot: lunchSlot, 
+        slotDuration: slotDuration,
+        id: name.toUpperCase(),
+      }
       
-      addCourse({name, year, startingTime, slots, lunchSlot, slotDuration});
+      addCourse(obj);
       setName("");
       setYear(null);
       setStartingTime();

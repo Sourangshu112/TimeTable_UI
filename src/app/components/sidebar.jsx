@@ -4,7 +4,7 @@
 import { 
   LayoutDashboard, Building2, Users, BookOpen, 
   Monitor, CalendarDays, GraduationCap, 
-  Layers, Clock, BookMarked,
+  Layers, Clock, BookMarked, FlaskConical
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -17,7 +17,8 @@ const menuItems = [
   { name: 'Departments', icon: Layers, href: '/home/Departments' },
   { name: 'Classes/Sections', icon: Users, href: '/home/Sections' }, // Mapped to 'Sections' folder
   { name: 'Faculty', icon: GraduationCap, href: '/home/Faculty' },
-  { name: 'Subjects', icon: BookMarked, href: '/home/Subjects' },
+  { name: 'Theory Subjects', icon: BookMarked, href: '/home/TheorySubjects' },
+  { name: 'Practical Subjects', icon: FlaskConical, href: '/home/PracticalSubjects' },
   { name: 'Rooms/Labs', icon: Monitor, href: '/home/Rooms' }, // Mapped to 'Rooms' folder
   { name: 'Generate Timetable', icon: CalendarDays, href: '/home/GenerateTimetable' },
   { name: 'Timetable Viewer', icon: Clock, href: '/home/Timetable' },

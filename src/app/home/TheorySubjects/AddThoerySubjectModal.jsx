@@ -5,31 +5,37 @@ import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
 import { useStorage } from '@/app/storage';
 
-export default function AddSubjectModal(params){
+export default function AddTheorySubjectModal(params){
     const [name,setName] = useState("");
     const [code,setCode] = useState("");
     const [dept,setDept] = useState("");
-    const [type,setType] = useState("");
     const [hours,setHours] = useState();
 
-    const subjects = useStorage((state) => state.subjects);
-    const addSubject = useStorage((state) => state.addSubject);
+    const theorySubjects = useStorage((state) => state.theorySubjects);
+    const addTheorySubject = useStorage((state) => state.addTheorySubject);
 
     const handleAdd = () => {
-      if (!name || !code || !dept || !type || !hours){
+      if (!name || !code || !dept || !hours){
         alert("Please enter all the fields")
         return
       }
-      if(subjects.find(s => s.id === code)){
-        alert("Slready Exists");
+      if(theorySubjects.find(s => s.id === code.toUpperCase())){
+        alert("Already Exists");
         return;
       }
+      
+      const obj = {
+        name: name,
+        code : code.toUpperCase(),
+        dept : dept,
+        hours : hours,
+        id: code.toUpperCase()
+      }
 
-      addSubject({name, code, dept , type, hours});
+      addTheorySubject(obj);
       setName("");
       setCode("");
       setDept("");
-      setType("");
       setHours()
       params.onClose();
     }
@@ -61,26 +67,11 @@ export default function AddSubjectModal(params){
                 <div className="p-8">
                     <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
                     <InputWithLabel labelName="Subject Name" type="text" placeholder="Basic Electrical" onChange={(e) => setName(e.target.value)} />
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         <InputWithLabel labelName="Subject Code" type="text" placeholder="ES-EE-101" onChange={(e) => setCode(e.target.value)} />
-                        <InputWithLabel labelName="Department" type="text" placeholder="Electrical" onChange={(e) => setDept(e.target.value)} />                        
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">Type of subject</label>            
-                            <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            id="type"
-                            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all"
-                            >
-                                <option value="" disabled>select-one</option>
-                                <option value="theory">theory</option>
-                                <option value="practical">practical</option>
-                            </select>
-                            </div>
-                        <InputWithLabel labelName="Lecture hrs per week" type="number" placeholder="3 or 4" onChange={(e) => setHours(e.target.value)} />                        
-                    </div>
+                        <InputWithLabel labelName="Department" type="text" placeholder="Electrical" onChange={(e) => setDept(e.target.value)} />
+                        <InputWithLabel labelName="Lecture hrs per week" type="number" placeholder="3 or 4" onChange={(e) => setHours(e.target.value)} />                         
+                    </div>                       
                     <div className="pt-4">
                         <SaveNextButton text="Save Subject" onClick={handleAdd} />
                     </div>

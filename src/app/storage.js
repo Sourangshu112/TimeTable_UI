@@ -23,7 +23,7 @@ export const useStorage = create(
       //ACTIONS
       addCourse: (course) => 
         set((state) => ({
-          courses: [...state.courses,{...course, id: course.name}]
+          courses: [...state.courses,{...course}]
         })),
         
       removeCourse: (id) => 
@@ -37,7 +37,7 @@ export const useStorage = create(
       //ACTIONS
       addDepartment: (dept) => 
         set((state) => ({
-          departments: [...state.departments,{...dept, id: dept.deptName}]
+          departments: [...state.departments,{...dept}]
         })),
         
       removeDepartment: (id) => 
@@ -61,20 +61,33 @@ export const useStorage = create(
 
       //Subjects
       //STATE
-      subjects: [],
+      theorySubjects: [],
       //ACTION
-      addSubject: (subject) => 
+      addTheorySubject: (theorySubject) => 
         set((state) => ({
-          subjects: [...state.subjects,{...subject, id: subject.code}]
+          theorySubjects: [...state.theorySubjects,{...theorySubject}]
         })),
       
-      removeSubject: (id) => 
+      removeTheorySubject: (id) => 
         set((state) => ({
-          subjects: state.subjects.filter((subject) => subject.id !== id)
+          theorySubjects: state.theorySubjects.filter((theorySubject) => theorySubject.id !== id)
         })),
 
-      // Classes/section
+      practicalSubjects: [],
+      //ACTION
+      addPracticalSubject: (practicalSubject) => 
+        set((state) => ({
+          practicalSubjects: [...state.practicalSubjects,{...practicalSubject}]
+        })),
+      
+      removePracticalSubject: (id) => 
+        set((state) => ({
+          practicalSubjects: state.practicalSubjects.filter((practicalSubject) => practicalSubject.id !== id)
+        })),
+      
+        // Classes/section
       autoSections: [],
+      deletedBatchIds: [],
       //ACTION
       addAutoSection: (section) => 
         set((state) => ({
@@ -83,7 +96,8 @@ export const useStorage = create(
 
       removeAutoSection: (id) => 
         set((state) => ({
-          autoSections: state.autoSections.filter((section) => section.id !== id)
+          autoSections: state.autoSections.filter((section) => section.id !== id),
+          deletedBatchIds: [...state.deletedBatchIds, id]
         })),
 
 
@@ -98,6 +112,28 @@ export const useStorage = create(
         set((state) => ({
           sections: state.sections.filter((section) => section.id !== id)
         })),
+      
+      //Rooms
+      classrooms: [],
+      addClassroom: (classroom) => 
+        set((state) => ({
+          classrooms: [...state.classrooms, {...classroom}]
+        })),
+      removeClassroom: (id) => 
+        set((state) => ({
+          classrooms: state.classrooms.filter((classroom) => classroom.id !== id)
+        })),
+      
+      labrooms: [],
+      addLabroom: (labroom) => 
+        set((state) => ({
+          labrooms: [...state.labrooms, {...labroom}]
+        })),
+      removeLabroom: (id) => 
+        set((state) => ({
+          labrooms: state.labrooms.filter((labroom) => labroom.id !== id)
+        })),
+
     }),
     {
       name: 'timetable-storage', // Unique key in localStorage
