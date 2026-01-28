@@ -25,16 +25,16 @@ export default function AddDepartmentModal(params){
             alert("Please enter a department name");
             return
         }
-        if(departments.find(d => d.id === deptName.toUpperCase())){
+        if(departments.find(d => d.id.toUpperCase() === deptName.toUpperCase())){
           alert("Already exists");
           return;
         }
         const obj = {
-          deptName: deptName.toUpperCase(),
+          deptName: deptName,
           courseInDept: courseInDept,
-          id: deptName.toUpperCase()
+          id: deptName
         }
-        addDepartment({deptName , courseInDept})
+        addDepartment(obj)
         setDeptName("");
         setCourseInDept([]);
         params.onClose();

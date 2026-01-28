@@ -42,8 +42,9 @@ export default function AddSectionModal(params){
             department: dept, 
             course: course,  
             year: parseInt(year),
-            Group: groupName, 
-            id: `${course}-${dept}-${year}-${groupName}`
+            Group: groupName,
+            room: false,
+            id: id,
         };
         addSection(newSection);
         setDept("");

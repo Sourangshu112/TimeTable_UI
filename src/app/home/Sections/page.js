@@ -37,9 +37,12 @@ export default function Section() {
                                  department: dept.deptName,
                                  year: i,
                                  Group: "A",
+                                 room: false,
                                  id: `${match.name}-${dept.deptName}-${i}-A`
                              };
-                              if (autoSections.find(s => s.id === obj.id)) continue;
+                              if (autoSections.find(s => s.id === obj.id)) {
+                                continue;
+                              }
                               if (deletedBatchIds.includes(obj.id)) continue;
                               addAutoSection(obj);
                          }
@@ -50,7 +53,7 @@ export default function Section() {
 
         createBatches();
 
-    }, [courses, departments, addAutoSection, autoSections]);
+    }, [courses, departments, addAutoSection]);
     
     return(
         <div className="space-y-6 p-6">
@@ -83,7 +86,7 @@ export default function Section() {
                   <p className="text-sm">Click the Add button to create your first section</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {autoSections.length > 0 && (
                     <div className="col-span-full mb-2">
                       <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
@@ -123,6 +126,7 @@ export default function Section() {
                       <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-full border border-blue-100">
                         Group {section.Group}
                       </span>
+                      <span className={`px-3 py-1 text-xs font-bold rounded-full ${section.room ? "text-green-700 bg-green-200 border border-green-300" : "text-red-700 bg-red-200 border border-red-300" } `}>Room Alloted: {section.room ? 'Yes' : 'No'}</span>
                       </div>
                     </div>
                   </div>
@@ -157,16 +161,12 @@ export default function Section() {
                         <DeleteButton onDelete={()=> removeSection(section.id)} />
                       </div>
                     </div>                
-                    {/* Details: Year & ID */}
                     <div className="flex justify-between items-center mt-auto">
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-slate-800 uppercase font-semibold">Year</span>
-                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
-                          {section.year}
-                        </span>
-                      <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-full border border-blue-100">
-                        Group {section.Group}
-                      </span>
+                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">{section.year}</span>
+                        <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-100 rounded-full border border-blue-100">Group {section.Group}</span>
+                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${section.room ? "text-green-700 bg-green-200 border border-green-300" : "text-red-700 bg-red-200 border border-red-300" } `}>Room Alloted: {section.room ? 'Yes' : 'No'}</span>
                       </div>
                     </div>
                   </div>

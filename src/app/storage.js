@@ -23,7 +23,7 @@ export const useStorage = create(
       //ACTIONS
       addCourse: (course) => 
         set((state) => ({
-          courses: [...state.courses,{...course}]
+          courses: [...state.courses,{...course,}]
         })),
         
       removeCourse: (id) => 
@@ -90,9 +90,14 @@ export const useStorage = create(
       deletedBatchIds: [],
       //ACTION
       addAutoSection: (section) => 
-        set((state) => ({
-          autoSections: [...state.autoSections,{...section}]
-        })),
+        set((state) => {
+          if (state.autoSections.some(s => s.id === section.id)) {
+            return state; // Do nothing if duplicate
+          }
+          return {
+           autoSections: [...state.autoSections,{...section}]
+          };
+        }),
 
       removeAutoSection: (id) => 
         set((state) => ({
@@ -111,6 +116,18 @@ export const useStorage = create(
       removeSection: (id) => 
         set((state) => ({
           sections: state.sections.filter((section) => section.id !== id)
+        })),
+
+      updateSectionRoom: (id, status) => 
+        set((state) => ({
+          // Check and update inside autoSections
+          autoSections: state.autoSections.map((s) => 
+            s.id === id ? { ...s, room: status } : s
+          ),
+          // Check and update inside manually added sections
+          sections: state.sections.map((s) => 
+            s.id === id ? { ...s, room: status } : s
+          ),
         })),
       
       //Rooms

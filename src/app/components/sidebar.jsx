@@ -2,7 +2,7 @@
 "use client"; // <--- Required for usePathname
 
 import { 
-  LayoutDashboard, Building2, Users, BookOpen, 
+ Building2, Users, BookOpen, 
   Monitor, CalendarDays, GraduationCap, 
   Layers, Clock, BookMarked, FlaskConical
 } from 'lucide-react';
@@ -11,15 +11,15 @@ import { usePathname } from 'next/navigation';
 
 // defined with exact paths matching your folder structure
 const menuItems = [
-  { name: 'Dashboard', icon: LayoutDashboard, href: '/home/Dashboard' },
   { name: 'Institution Setup', icon: Building2, href: '/home/InstitutionSetup' },
   { name: 'Courses', icon: BookOpen, href: '/home/Courses' }, 
   { name: 'Departments', icon: Layers, href: '/home/Departments' },
   { name: 'Classes/Sections', icon: Users, href: '/home/Sections' }, // Mapped to 'Sections' folder
   { name: 'Faculty', icon: GraduationCap, href: '/home/Faculty' },
   { name: 'Theory Subjects', icon: BookMarked, href: '/home/TheorySubjects' },
+  { name: 'Classrooms', icon: Monitor, href: '/home/Classrooms' },
   { name: 'Practical Subjects', icon: FlaskConical, href: '/home/PracticalSubjects' },
-  { name: 'Rooms/Labs', icon: Monitor, href: '/home/Rooms' }, // Mapped to 'Rooms' folder
+  { name: 'LabsRooms', icon: FlaskConical, href: '/home/Labrooms' },
   { name: 'Generate Timetable', icon: CalendarDays, href: '/home/GenerateTimetable' },
   { name: 'Timetable Viewer', icon: Clock, href: '/home/Timetable' },
 ];
