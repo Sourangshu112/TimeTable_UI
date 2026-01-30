@@ -5,8 +5,11 @@ import AddButton from '@/app/components/add';
 import { useStorage } from '@/app/storage';
 import AddLabRoomModal from './AddLabRoomModal';
 import DeleteButton from '../delete';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function LabRooms() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     
     // Get Lab data
@@ -26,7 +29,7 @@ export default function LabRooms() {
                         <p className="text-sm text-slate-500">Manage Practical Sessions & Teachers</p>
                     </div>
                 </div>
-                <AddButton text="Add Lab Config" onClick={() => setIsModalOpen(true)} />
+                <AddButton text=" Lab Config" onClick={() => setIsModalOpen(true)} />
             </div>
 
             {/* 2. Main Content */}
@@ -112,6 +115,9 @@ export default function LabRooms() {
                         </div>
                     )}
                 </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Generate")} />
+            </div>
             </div>
 
             {/* Modal */}

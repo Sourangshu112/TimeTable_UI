@@ -5,9 +5,11 @@ import { Building2, Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import InputField from "./input"; 
 import SaveNextButton from "@/app/components/save"; // Assuming this path is correct
-import { useStorage } from "@/app/storage"; 
+import { useStorage } from "@/app/storage";
+import { useRouter } from "next/navigation";
 
 export default function InstitutionSetup() {
+  const router = useRouter();
   const [logoPreview, setLogoPreview] = useState(null);
 
   // 1. Get Data and Updater from Store
@@ -26,12 +28,6 @@ export default function InstitutionSetup() {
     if (file) {
       setLogoPreview(URL.createObjectURL(file));
     }
-  };
-
-  // 3. Button Handler
-  const handleSave = () => {
-    console.log("Saved Data:", institution);
-    // Add navigation logic here, e.g., router.push('/next-step')
   };
 
   // Prevent rendering until store is loaded from localStorage
@@ -129,7 +125,7 @@ export default function InstitutionSetup() {
 
         {/* Footer Actions */}
         <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end gap-3">
-          <SaveNextButton text="Save and Next" onClick={handleSave} />
+          <SaveNextButton text="Save and Next" onClick={() => router.push("Courses")} />
         </div>
 
       </div>

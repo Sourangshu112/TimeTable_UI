@@ -9,6 +9,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+
 // defined with exact paths matching your folder structure
 const menuItems = [
   { name: 'Institution Setup', icon: Building2, href: '/home/InstitutionSetup' },
@@ -20,7 +21,7 @@ const menuItems = [
   { name: 'Classrooms', icon: Monitor, href: '/home/Classrooms' },
   { name: 'Practical Subjects', icon: FlaskConical, href: '/home/PracticalSubjects' },
   { name: 'LabsRooms', icon: FlaskConical, href: '/home/Labrooms' },
-  { name: 'Generate Timetable', icon: CalendarDays, href: '/home/GenerateTimetable' },
+  { name: 'Generate Timetable', icon: CalendarDays, href: '/home/Generate' },
   { name: 'Timetable Viewer', icon: Clock, href: '/home/Timetable' },
 ];
 

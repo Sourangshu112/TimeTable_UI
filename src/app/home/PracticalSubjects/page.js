@@ -6,8 +6,11 @@ import AddButton from '@/app/components/add';
 import AddPracticalSubjectModal from './AddPracticalSubjectModal';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function PracticalSubjects() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const practicalSubjects = useStorage((state) => state.practicalSubjects);
@@ -77,6 +80,9 @@ export default function PracticalSubjects() {
                         </div>
                     )}
                 </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Labrooms")} />
+            </div>
             </div>
 
             <AddPracticalSubjectModal

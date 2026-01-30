@@ -1,0 +1,360 @@
+{
+  "institution": {
+    "name": "GKCIET",
+    "code": "123"
+  },
+  "theorySubjects": [
+    {
+      "name": "Circuit Theory",
+      "code": "ES-EE-301",
+      "dept": "Electrical",
+      "hours": "4",
+      "id": "ES-EE-301"
+    }
+  ],
+  "practicalSubjects": [
+    {
+      "name": "Circuit Theory Lab",
+      "code": "DSD",
+      "dept": "ee",
+      "hours": "2",
+      "id": "DSD"
+    }
+  ],
+  "section": [
+    {
+      "course": "B.Tech",
+      "department": "EE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-EE-1-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "EE",
+      "year": 2,
+      "Group": "A",
+      "room": true,
+      "id": "B.Tech-EE-2-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "EE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-EE-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "EE",
+      "year": 4,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-EE-4-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "EE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-EE-1-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "EE",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-EE-2-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "EE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-EE-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "ME",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-ME-1-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "ME",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-ME-2-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "ME",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-ME-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "ME",
+      "year": 4,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-ME-4-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "ME",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-ME-1-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "ME",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-ME-2-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "ME",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-ME-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CSE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CSE-1-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CSE",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CSE-2-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CSE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CSE-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CSE",
+      "year": 4,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CSE-4-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CSE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CSE-1-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CSE",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CSE-2-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CSE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CSE-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "FOOD",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-FOOD-1-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "FOOD",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-FOOD-2-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "FOOD",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-FOOD-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "FOOD",
+      "year": 4,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-FOOD-4-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "FOOD",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-FOOD-1-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "FOOD",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-FOOD-2-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "FOOD",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-FOOD-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CEE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CEE-1-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CEE",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CEE-2-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CEE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CEE-3-A"
+    },
+    {
+      "course": "B.Tech",
+      "department": "CEE",
+      "year": 4,
+      "Group": "A",
+      "room": false,
+      "id": "B.Tech-CEE-4-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CEE",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CEE-1-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CEE",
+      "year": 2,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CEE-2-A"
+    },
+    {
+      "course": "Diploma",
+      "department": "CEE",
+      "year": 3,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-CEE-3-A"
+    },
+    {
+      "department": "EE",
+      "course": "B.Tech",
+      "year": 2,
+      "Group": "B",
+      "room": true,
+      "id": "B.Tech-EE-2-B"
+    },
+    {
+      "department": "EE",
+      "course": "Diploma",
+      "year": 1,
+      "Group": "A",
+      "room": false,
+      "id": "Diploma-EE-1-A"
+    }
+  ],
+  "classrooms": [
+    {
+      "name": "A24",
+      "batches": [
+        "B.Tech-EE-2-A",
+        "B.Tech-EE-2-B"
+      ],
+      "subjects": [
+        {
+          "subjectId": "Circuit Theory",
+          "facultyId": "Rajeev kumar"
+        }
+      ],
+      "id": "A24"
+    }
+  ],
+  "labrooms": [
+    {
+      "name": "EE lab 3",
+      "department": "EE",
+      "labs": [
+        {
+          "batch": "B.Tech-EE-2-A",
+          "subject": "Circuit Theory Lab",
+          "teacher": "Rajeev kumar",
+          "trainer": "Rajeev kumar"
+        },
+        {
+          "batch": "B.Tech-EE-2-B",
+          "subject": "Circuit Theory Lab",
+          "teacher": "Rajeev kumar",
+          "trainer": "Rajeev kumar"
+        }
+      ],
+      "id": "EE lab 3",
+      "type": "Labroom"
+    }
+  ]
+}

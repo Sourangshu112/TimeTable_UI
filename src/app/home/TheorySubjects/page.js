@@ -6,8 +6,11 @@ import AddButton from '@/app/components/add';
 import AddTheorySubjectModal from './AddThoerySubjectModal';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function TheorySubjects() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
 
     const theorySubjects = useStorage((state) => state.theorySubjects);
@@ -84,6 +87,9 @@ export default function TheorySubjects() {
                   ))}
                 </div>
               )}
+            </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Classrooms")} />
             </div>
           </div>
     

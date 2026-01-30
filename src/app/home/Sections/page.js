@@ -7,8 +7,11 @@ import { Users } from 'lucide-react';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
 import AddSectionModal from './AddSectionModal';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function Section() {
+    const router = useRouter()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const courses = useStorage((state) => state.courses);
     const departments = useStorage((state) => state.departments);
@@ -174,6 +177,9 @@ export default function Section() {
                 }
               </div>
               )}
+            </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Faculty")} />
             </div>
           </div>
 

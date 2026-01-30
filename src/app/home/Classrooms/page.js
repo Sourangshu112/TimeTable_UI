@@ -6,8 +6,11 @@ import AddButton from '@/app/components/add';
 import { useStorage } from '@/app/storage';
 import AddClassRoomModal from './AddClassRoomModal';
 import DeleteButton from '../delete';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function Classrooms() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     
     // Get data and actions from store
@@ -116,6 +119,9 @@ export default function Classrooms() {
                         </div>
                     )}
                 </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("PracticalSubjects")} />
+            </div>
             </div>
 
             {/* Modal */}

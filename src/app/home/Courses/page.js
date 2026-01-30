@@ -8,8 +8,11 @@ import AddCourseModal from './AddCourseModal';
 import { BookOpen } from 'lucide-react';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
+import { useRouter } from 'next/navigation';
+import SaveNextButton from '@/app/components/save';
 
 export default function CoursesPage() {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const courses = useStorage((state) => state.courses);
@@ -105,6 +108,9 @@ export default function CoursesPage() {
           ))}
         </div>
           )}
+        </div>
+        <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+          <SaveNextButton text="Save and Next" onClick={() => router.push("Departments")} />
         </div>
       </div>
 

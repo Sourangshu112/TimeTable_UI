@@ -7,8 +7,11 @@ import AddFacultyModal from './AddFacultyModal';
 import { GraduationCap } from 'lucide-react';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
+import { useRouter } from 'next/navigation';
+import SaveNextButton from '@/app/components/save';
 
 export default function Faculty() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const facultys = useStorage((state) => state.facultys);
     const removeFaculty = useStorage((state) => state.removeFaculty);
@@ -85,6 +88,9 @@ export default function Faculty() {
                   ))}
                 </div>
               )}
+            </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("TheorySubjects")} />
             </div>
           </div>
     

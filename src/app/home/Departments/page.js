@@ -7,8 +7,11 @@ import AddDepartmentModal from './AddDepartmentModal';
 import { Layers } from 'lucide-react';
 import { useStorage } from '@/app/storage';
 import DeleteButton from '../delete';
+import SaveNextButton from '@/app/components/save';
+import { useRouter } from 'next/navigation';
 
 export default function Department() {
+    const router = useRouter()
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal
 
     const departments = useStorage((state) => state.departments);
@@ -84,6 +87,9 @@ export default function Department() {
             ))}
             </div>
               )}
+            </div>
+            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Sections")} />
             </div>
           </div>
     
