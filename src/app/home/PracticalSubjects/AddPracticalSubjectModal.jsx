@@ -69,8 +69,6 @@ export default function AddPracticalSubjectModal(params) {
                         <p className='text-s font-bold text-slate-400'>If lab is 4 hrs split into 2 class of 2 hrs then enter 2,2. Else if countinuous then enter 4</p>
                         <InputWithLabel labelName="Lab/Practical Name" type="text" placeholder="Data Structures Lab" onChange={(e) => setName(e.target.value)} />
                         <div className="grid grid-cols-3 gap-4">
-                            <InputWithLabel labelName="Lab Code" type="text" placeholder="CS-PC-101" onChange={(e) => setCode(e.target.value)} />
-                            <InputWithLabel labelName="Department" type="text" placeholder="CSE" onChange={(e) => setDept(e.target.value)} />
                             <InputWithLabel labelName="Lab hrs per week" type="text" placeholder="2 or 3" onChange={(e) => setHours(e.target.value)} />                        
                         </div>                       
                         <div className="pt-4">

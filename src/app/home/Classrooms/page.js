@@ -26,7 +26,7 @@ export default function Classrooms() {
                         <Monitor size={24} />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold text-slate-800">Room Configurations</h2>
+                        <h2 className="text-xl font-bold text-slate-800">Theory classrooms</h2>
                         <p className="text-sm text-slate-500">Manage room allocations and linked faculty</p>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ export default function Classrooms() {
                 </div>
             <div className='flex justify-end'>
             <div className="w-1/2 p-6 border-t border-slate-100 gap-3">
-              <SaveNextButton text="Save and Next" onClick={() => router.push("TheorySubjects")} />
+              <SaveNextButton text="Save and Next" onClick={() => router.push("PracticalSubjects")} />
             </div>
             </div>
             </div>

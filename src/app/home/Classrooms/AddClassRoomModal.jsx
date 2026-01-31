@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo } from 'react';
-import { X, Plus, Trash2, Search } from 'lucide-react';
+import { X, Plus, Trash2 } from 'lucide-react'; // Removed Search import
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
 import { useStorage } from '@/app/storage';
@@ -15,25 +15,27 @@ export default function AddClassRoomModal(params){
     const [addedBatches, setAddedBatches] = useState([]);
 
     // --- 3. Subject-Faculty State ---
-    const [selectedSubject, setSelectedSubject] = useState("");
-    const [selectedFaculty, setSelectedFaculty] = useState("");
-    const [subjectSearch, setSubjectSearch] = useState(""); 
-    const [facultySearch, setFacultySearch] = useState("");
+    // Changed: These are now direct input values, not search queries
+    const [subjectName, setSubjectName] = useState("");
+    const [subjectHour, setSubjectHour] = useState("")
+    const [facultyName, setFacultyName] = useState("");
+    const [facultyInitial, setFacultyInitial] = useState(""); // Needed for Faculty ID
     const [subjectMap, setSubjectMap] = useState([]); 
 
-    // --- 4. Store Data (with safety fallbacks) ---
+    // --- 4. Store Data ---
     const classrooms = useStorage((state) => state.classrooms);
     const addClassroom = useStorage((state) => state.addClassroom); 
-    
     const autoSections = useStorage((state) => state.autoSections);
     const sections = useStorage((state) => state.sections);
-    const facultys = useStorage((state) => state.facultys);
-    const theorySubjects = useStorage((state) => state.theorySubjects); 
     const updateSectionRoom = useStorage((state) => state.updateSectionRoom);
+    const theorySubjects = useStorage((state) => state.theorySubjects); 
+    const facultys = useStorage((state) => state.facultys);
+    const addTheorySubject = useStorage((state) => state.addTheorySubject);
+    const addFaculty = useStorage((state) => state.addFaculty);
 
     // --- 5. Helpers & Filters ---
 
-    // A. Filter Sections
+    // Filter Sections (Kept as is)
     const allSections = useMemo(() => [...autoSections, ...sections], [autoSections, sections]);
     const filteredSections = useMemo(() => {
         return allSections.filter(sec => 
@@ -41,21 +43,6 @@ export default function AddClassRoomModal(params){
             !addedBatches.includes(sec.id)
         );
     }, [allSections, batchSearch, addedBatches]);
-
-    // B. Filter Subjects (NEW)
-    const filteredSubjects = useMemo(() => {
-        return theorySubjects.filter(sub => 
-            sub.name.toLowerCase().includes(subjectSearch.toLowerCase())
-        );
-    }, [theorySubjects, subjectSearch]);
-
-    // C. Filter Faculty (NEW)
-    const filteredFaculty = useMemo(() => {
-        return facultys.filter(fac => 
-            fac.name.toLowerCase().includes(facultySearch.toLowerCase()) || 
-            fac.initial?.toLowerCase().includes(facultySearch.toLowerCase())
-        );
-    }, [facultys, facultySearch]);
 
     // --- 6. Handlers ---
 
@@ -71,20 +58,53 @@ export default function AddClassRoomModal(params){
     };
 
     const handleAddSubjectMap = () => {
-        if (!selectedSubject || !selectedFaculty) {
-            alert("Please select both a Subject and a Faculty");
-            return;
-        }
-        if (subjectMap.find(m => m.subjectId === selectedSubject)) {
-            alert("This subject is already allocated");
+        // 1. Validation
+        if (!subjectName || !subjectHour || !facultyName || !facultyInitial) {
+            alert("Please enter All the fields");
             return;
         }
 
-        setSubjectMap([...subjectMap, { subjectId: selectedSubject, facultyId: selectedFaculty }]);
+        const subId = subjectName.trim();
+        const facId = facultyInitial.trim().toUpperCase(); // Using initial as ID
         
-        // Reset selections but keep searches (optional preference)
-        setSelectedSubject("");
-        setSelectedFaculty("");
+        // 2. Check & Add Subject if it doesn't exist
+        const subjectExists = theorySubjects.find(s => s.id.toUpperCase() === subId.toUpperCase());
+        if (!subjectExists) {
+            addTheorySubject({
+                name: subjectName.toUpperCase(),
+                hours: parseInt(subjectHour),
+                id: subId.toUpperCase(), 
+            });
+        }
+
+        // 3. Check & Add Faculty if it doesn't exist
+        const facultyExists = facultys.find(f => f.id === facId.toUpperCase());
+        if (!facultyExists) {
+            const obj = {
+            name: facultyName,
+            initial: facId.toUpperCase(),
+            id: facId.toUpperCase(),
+            }
+            addFaculty(obj);
+        }
+
+        // 4. Link them in the local map
+        if (subjectMap.find(m => m.subjectId === subId)) {
+            alert("This subject is already allocated in this room");
+            return;
+        }
+
+        setSubjectMap([...subjectMap, { 
+            subjectId: subId, 
+            facultyId: facId, // Storing ID
+            facultyName: facultyName // Storing Name for display (optional)
+        }]);
+        
+        // 5. Reset fields
+        setSubjectName("");
+        setSubjectHour("");
+        setFacultyName("");
+        setFacultyInitial("");
     };
 
     const handleRemoveSubjectMap = (subId) => {
@@ -93,7 +113,7 @@ export default function AddClassRoomModal(params){
 
     const handleSave = () => {
         if(!name){
-            alert("Please enter Room Name and Type");
+            alert("Please enter Room Name");
             return;
         }
 
@@ -119,8 +139,10 @@ export default function AddClassRoomModal(params){
         setAddedBatches([]);
         setSubjectMap([]);
         setBatchSearch("");
-        setSubjectSearch("");
-        setFacultySearch("");
+        setSubjectName("");
+        setSubjectHour("");
+        setFacultyName("");
+        setFacultyInitial("");
         params.onClose();
     };
 
@@ -137,7 +159,7 @@ export default function AddClassRoomModal(params){
             >
                 {/* --- Header --- */}
                 <div className="flex justify-between items-center p-6 border-b border-slate-100 shrink-0">
-                    <h2 className="text-xl font-bold text-slate-800">Configure Class/Lab</h2>
+                    <h2 className="text-xl font-bold text-slate-800">Configure Class</h2>
                     <button onClick={params.onClose} className="p-2 hover:bg-slate-100 rounded-full text-slate-500">
                         <X size={20} />
                     </button>
@@ -151,7 +173,7 @@ export default function AddClassRoomModal(params){
                         <InputWithLabel 
                             labelName="Room Name" 
                             type="text" 
-                            placeholder="L-301" 
+                            placeholder="e.g. L-301" 
                             value={name} 
                             onChange={(e) => setName(e.target.value)} 
                         />
@@ -166,28 +188,16 @@ export default function AddClassRoomModal(params){
                         
                         {/* Batch Search & Add Bar */}
                         <div className="flex gap-2 items-end">
-                            <div className="flex-1 relative">
-                                <Search className="absolute left-3 top-3 text-slate-400" size={16} />
-                                <input 
-                                    type="text" 
-                                    placeholder="Search sections..." 
-                                    value={batchSearch}
-                                    onChange={(e) => setBatchSearch(e.target.value)}
-                                    className="w-full pl-9 p-2 text-sm border border-slate-200 rounded-t-lg border-b-0 focus:outline-none"
-                                />
+                            <div className="flex-1">
+                                <label className="text-xs text-slate-500 mb-1 font-semibold">Select Section</label>
                                 <select 
                                     value={selectedBatchId} 
-                                    size={batchSearch.length > 0 ? 5 : 1} 
-                                    onChange={(e) => {
-                                        setSelectedBatchId(e.target.value);
-                                        setBatchSearch("");
-                                    }}
-                                    className={`w-full p-3 border border-slate-200 rounded-b-lg bg-slate-50 text-sm focus:ring-2 focus:ring-blue-500 outline-none ${
-                                        batchSearch.length > 0 ? "absolute z-10 shadow-lg top-full left-0 max-h-40 overflow-y-auto" : ""
-                                    }`}>                               
+                                    onChange={(e) => setSelectedBatchId(e.target.value)}
+                                    className="w-full p-2.5 border border-slate-200 rounded-lg bg-slate-50 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                >                               
                                     <option value="" disabled>Select a Section...</option>
                                     {filteredSections
-                                        .filter(sec => !sec.room) // Only allow sections where room is false
+                                        .filter(sec => !sec.room)
                                         .map(sec => (
                                             <option key={sec.id} value={sec.id}>{sec.id}</option>
                                         ))
@@ -197,7 +207,7 @@ export default function AddClassRoomModal(params){
                             <button 
                                 onClick={handleAddBatch}
                                 disabled={!selectedBatchId}
-                                className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="p-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                             >
                                 <Plus size={20} />
                             </button>
@@ -217,88 +227,72 @@ export default function AddClassRoomModal(params){
 
                     <hr className="border-slate-100" />
 
-                    {/* 3. Subject & Faculty Map (Two-Column Search) */}
+                    {/* 3. Subject & Faculty Map (NEW DIRECT INPUTS) */}
                     <div className="space-y-3">
                         <label className="text-sm font-bold text-slate-800 flex items-center gap-2">
                             <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                            Subject & Faculty Allocation
+                            Quick Add & Link Subject/Faculty
                         </label>
+                        <p className="text-xs text-slate-500">Enter new or existing details. They will be saved to the database automatically.</p>
 
-                        {/* Searchable Inputs Container */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                             
-                            {/* Column 1: Subject Search */}
-                            <div className="flex flex-col relative">
-                                <label className="text-xs text-slate-500 mb-1 font-semibold">Subject</label>
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-3 text-slate-400" size={14} />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Search Subject..." 
-                                        value={subjectSearch}
-                                        onChange={(e) => setSubjectSearch(e.target.value)}
-                                        className="w-full pl-8 p-2 text-xs border border-slate-200 rounded-t-lg border-b-0 focus:outline-none"
-                                    />
-                                    <select 
-                                        value={selectedSubject} 
-                                        size={subjectSearch.length > 0 ? 5 : 1} // Expands on search
-                                        onChange={(e) => setSelectedSubject(e.target.value)}
-                                        className={`w-full p-2 border border-slate-200 rounded-b-lg bg-slate-50 text-sm focus:ring-2 focus:ring-emerald-500 outline-none ${
-                                            subjectSearch.length > 0 ? "absolute z-10 shadow-lg top-full left-0" : ""
-                                        }`}>                                   
-                                        <option value="">Select Subject...</option>
-                                        {filteredSubjects.map(sub => (
-                                            <option key={sub.id || sub.code} value={sub.name}>{sub.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
+                            {/* Subject Input */}
+                            <div className="md:col-span-3">
+                                <InputWithLabel 
+                                    labelName="Subject Name" 
+                                    placeholder="e.g. Physics" 
+                                    value={subjectName} 
+                                    onChange={(e) => setSubjectName(e.target.value)}
+                                />
                             </div>
 
-                            {/* Column 2: Faculty Search */}
-                            <div className="flex flex-col relative">
-                                <label className="text-xs text-slate-500 mb-1 font-semibold">Faculty</label>
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-3 text-slate-400" size={14} />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Search Faculty..." 
-                                        value={facultySearch}
-                                        onChange={(e) => setFacultySearch(e.target.value)}
-                                        className="w-full pl-8 p-2 text-xs border border-slate-200 rounded-t-lg border-b-0 focus:outline-none"
-                                    />
-                                    <select 
-                                        value={selectedFaculty} 
-                                        size={facultySearch.length > 0 ? 5 : 1} // Expands on search
-                                        onChange={(e) => setSelectedFaculty(e.target.value)}
-                                        className={`w-full p-2 border border-slate-200 rounded-b-lg bg-slate-50 text-sm focus:ring-2 focus:ring-emerald-500 outline-none ${
-                                            facultySearch.length > 0 ? "absolute z-10 shadow-lg top-full left-0" : ""
-                                        }`}
->                                   
-                                        <option value="">Select Faculty...</option>
-                                        {filteredFaculty.map(fac => (
-                                            <option key={fac.id || fac.name} value={fac.name}>{fac.name} ({fac.initial})</option>
-                                        ))}
-                                    </select>
-                                </div>
+                            <div className="md:col-span-2">
+                                <InputWithLabel 
+                                    labelName="Hrs/week" 
+                                    placeholder="3 or 4" 
+                                    value={subjectHour} 
+                                    onChange={(e) => setSubjectHour(e.target.value)}
+                                />
+                            </div>
+
+                            {/* Faculty Name Input */}
+                            <div className="md:col-span-5">
+                                <InputWithLabel 
+                                    labelName="Faculty Name" 
+                                    placeholder="e.g. Dr. Smith" 
+                                    value={facultyName} 
+                                    onChange={(e) => setFacultyName(e.target.value)}
+                                />
+                            </div>
+
+                            {/* Faculty Initial Input */}
+                            <div className="md:col-span-2">
+                                <InputWithLabel 
+                                    labelName="Initial (ID)" 
+                                    placeholder="e.g. DS" 
+                                    value={facultyInitial} 
+                                    onChange={(e) => setFacultyInitial(e.target.value)}
+                                />
                             </div>
                         </div>
 
                         {/* Add Button */}
                         <button 
                             onClick={handleAddSubjectMap}
-                            className="w-full py-2 bg-emerald-50 text-emerald-600 font-semibold rounded-lg hover:bg-emerald-100 border border-emerald-200 flex items-center justify-center gap-2 mt-2"
+                            className="w-full py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 shadow-sm flex items-center justify-center gap-2 mt-2"
                         >
-                            <Plus size={16} /> Link Subject to Faculty
+                            <Plus size={16} /> Save & Assign
                         </button>
 
                         {/* Allocation Table */}
                         {subjectMap.length > 0 && (
-                            <div className="border border-slate-200 rounded-lg overflow-hidden mt-2">
+                            <div className="border border-slate-200 rounded-lg overflow-hidden mt-4">
                                 <table className="w-full text-sm text-left">
                                     <thead className="bg-slate-50 text-slate-500 font-semibold">
                                         <tr>
                                             <th className="p-2 pl-4">Subject</th>
-                                            <th className="p-2">Faculty</th>
+                                            <th className="p-2">Faculty (ID)</th>
                                             <th className="p-2 w-10"></th>
                                         </tr>
                                     </thead>
@@ -306,7 +300,9 @@ export default function AddClassRoomModal(params){
                                         {subjectMap.map((map, idx) => (
                                             <tr key={idx} className="bg-white hover:bg-slate-50 transition-colors">
                                                 <td className="p-2 pl-4 font-medium text-slate-800">{map.subjectId}</td>
-                                                <td className="p-2 text-slate-600">{map.facultyId}</td>
+                                                <td className="p-2 text-slate-600">
+                                                    {map.facultyName ? `${map.facultyName} (${map.facultyId})` : map.facultyId}
+                                                </td>
                                                 <td className="p-2 text-center">
                                                     <button onClick={() => handleRemoveSubjectMap(map.subjectId)} className="text-slate-400 hover:text-red-500 transition-colors">
                                                         <Trash2 size={16} />
@@ -324,7 +320,7 @@ export default function AddClassRoomModal(params){
 
                 {/* --- Footer --- */}
                 <div className="p-6 border-t border-slate-100 bg-slate-50 rounded-b-xl shrink-0">
-                    <SaveNextButton text="Create Classroom Config" onClick={handleSave} />
+                    <SaveNextButton text="Complete..." onClick={handleSave} />
                 </div>
             </div>
         </div>

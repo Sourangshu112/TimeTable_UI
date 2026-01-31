@@ -16,10 +16,10 @@ const menuItems = [
   { name: 'Courses', icon: BookOpen, href: '/home/Courses' }, 
   { name: 'Departments', icon: Layers, href: '/home/Departments' },
   { name: 'Classes/Sections', icon: Users, href: '/home/Sections' }, // Mapped to 'Sections' folder
-  { name: 'Classrooms', icon: Monitor, href: '/home/Classrooms' },
+  { name: 'Theory Classrooms', icon: Monitor, href: '/home/Classrooms' },
+  { name: 'Practical Subjects', icon: FlaskConical, href: '/home/PracticalSubjects' },
   { name: 'Faculty', icon: GraduationCap, href: '/home/Faculty' },
   { name: 'Theory Subjects', icon: BookMarked, href: '/home/TheorySubjects' },
-  { name: 'Practical Subjects', icon: FlaskConical, href: '/home/PracticalSubjects' },
   { name: 'LabsRooms', icon: FlaskConical, href: '/home/Labrooms' },
   { name: 'Generate Timetable', icon: CalendarDays, href: '/home/Generate' },
   { name: 'Timetable Viewer', icon: Clock, href: '/home/Timetable' },
