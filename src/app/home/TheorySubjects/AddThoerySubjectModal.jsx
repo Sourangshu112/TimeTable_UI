@@ -1,5 +1,5 @@
 'use client'
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
@@ -7,35 +7,28 @@ import { useStorage } from '@/app/storage';
 
 export default function AddTheorySubjectModal(params){
     const [name,setName] = useState("");
-    const [code,setCode] = useState("");
-    const [dept,setDept] = useState("");
     const [hours,setHours] = useState();
 
     const theorySubjects = useStorage((state) => state.theorySubjects);
     const addTheorySubject = useStorage((state) => state.addTheorySubject);
 
     const handleAdd = () => {
-      if (!name || !code || !dept || !hours){
+      if (!name || !hours){
         alert("Please enter all the fields")
         return
       }
-      if(theorySubjects.find(s => s.id === code.toUpperCase())){
+      if(theorySubjects.find(s => s.id === name.toUpperCase())){
         alert("Already Exists");
         return;
       }
       
       const obj = {
-        name: name,
-        code : code.toUpperCase(),
-        dept : dept,
+        name: name.toUpperCase(),
         hours : hours,
-        id: code.toUpperCase()
+        id: name.toUpperCase()
       }
-
       addTheorySubject(obj);
       setName("");
-      setCode("");
-      setDept("");
       setHours()
       params.onClose();
     }
@@ -66,10 +59,8 @@ export default function AddTheorySubjectModal(params){
                 {/* Scrollable Form Content */}
                 <div className="p-8">
                     <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                    <InputWithLabel labelName="Subject Name" type="text" placeholder="Basic Electrical" onChange={(e) => setName(e.target.value)} />
-                    <div className="grid grid-cols-3 gap-4">
-                        <InputWithLabel labelName="Subject Code" type="text" placeholder="ES-EE-101" onChange={(e) => setCode(e.target.value)} />
-                        <InputWithLabel labelName="Department" type="text" placeholder="Electrical" onChange={(e) => setDept(e.target.value)} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <InputWithLabel labelName="Subject Name" type="text" placeholder="Basic Electrical" onChange={(e) => setName(e.target.value)} />
                         <InputWithLabel labelName="Lecture hrs per week" type="number" placeholder="3 or 4" onChange={(e) => setHours(e.target.value)} />                         
                     </div>                       
                     <div className="pt-4">

@@ -27,28 +27,37 @@ export default function Section() {
         const createBatches = () => {
              const formattedCourses = courses.map(course => ({
                 name: course.name,
-                year: parseInt(course.year)
+                year: parseInt(course.year),
+                semesterType: course.semesterType,
              }));
 
              departments.forEach(dept => {
                  dept.courseInDept.forEach(courseName => {
                      const match = formattedCourses.find(c => c.name === courseName);
                      if (match) {
-                         for (let i = 1; i <= match.year; i++) {
-                              const obj = {
-                                 course: match.name,
-                                 department: dept.deptName,
-                                 year: i,
-                                 Group: "A",
-                                 room: false,
-                                 id: `${match.name}-${dept.deptName}-${i}-A`
-                             };
-                              if (autoSections.find(s => s.id === obj.id)) {
-                                continue;
-                              }
-                              if (deletedBatchIds.includes(obj.id)) continue;
-                              addAutoSection(obj);
-                         }
+                      let sem = 0
+                      if (formattedCourses.semesterType === "odd"){
+                        sem = 1;
+                      }
+                      else {
+                        sem = 2
+                      }
+                      for (let i = 1; i <= match.year; i++) {
+                           const obj = {
+                              course: match.name,
+                              department: dept.deptName,
+                              sem: sem,
+                              Group: "A",
+                              room: false,
+                              id: `${match.name}-${dept.deptName}-${i}-A`
+                          };
+                          sem += 2;
+                           if (autoSections.find(s => s.id === obj.id)) {
+                             continue;
+                           }
+                           if (deletedBatchIds.includes(obj.id)) continue;
+                           addAutoSection(obj);
+                      }
                      }
                  });
              });
@@ -122,11 +131,11 @@ export default function Section() {
                     {/* Details: Year & ID */}
                     <div className="flex justify-between items-center mt-auto">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-800 uppercase font-semibold">Year</span>
+                        <span className="text-xs text-slate-800 uppercase font-semibold">Sem</span>
                         <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
-                          {section.year}
+                          {section.sem}
                         </span>
-                      <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-50 rounded-full border border-blue-100">
+                      <span className="px-3 py-1 text-xs font-bold  rounded-full">
                         Group {section.Group}
                       </span>
                       <span className={`px-3 py-1 text-xs font-bold rounded-full ${section.room ? "text-green-700 bg-green-200 border border-green-300" : "text-red-700 bg-red-200 border border-red-300" } `}>Room Alloted: {section.room ? 'Yes' : 'No'}</span>
@@ -166,10 +175,14 @@ export default function Section() {
                     </div>                
                     <div className="flex justify-between items-center mt-auto">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-800 uppercase font-semibold">Year</span>
-                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">{section.year}</span>
-                        <span className="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-100 rounded-full border border-blue-100">Group {section.Group}</span>
-                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${section.room ? "text-green-700 bg-green-200 border border-green-300" : "text-red-700 bg-red-200 border border-red-300" } `}>Room Alloted: {section.room ? 'Yes' : 'No'}</span>
+                        <span className="text-xs text-slate-800 uppercase font-semibold">Sem</span>
+                        <span className="text-sm font-medium text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
+                          {section.sem}
+                        </span>
+                      <span className="px-3 py-1 text-xs font-bold  rounded-full">
+                        Group {section.Group}
+                      </span>
+                      <span className={`px-3 py-1 text-xs font-bold rounded-full ${section.room ? "text-green-700 bg-green-200 border border-green-300" : "text-red-700 bg-red-200 border border-red-300" } `}>Room Alloted: {section.room ? 'Yes' : 'No'}</span>
                       </div>
                     </div>
                   </div>
@@ -179,7 +192,7 @@ export default function Section() {
               )}
             </div>
             <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
-              <SaveNextButton text="Save and Next" onClick={() => router.push("Faculty")} />
+              <SaveNextButton text="Save and Next" onClick={() => router.push("Classrooms")} />
             </div>
           </div>
 

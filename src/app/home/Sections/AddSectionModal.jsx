@@ -8,7 +8,7 @@ import { useStorage } from '@/app/storage';
 export default function AddSectionModal(params){
     const [dept, setDept] = useState("");
     const [course, setCourse] = useState("");
-    const [year, setYear] = useState("");
+    const [sem, setSem] = useState("");
     const [groupName, setGroupName] = useState("");
     const sections = useStorage((state) => state.sections);
     const autoSections = useStorage((state) => state.autoSections);
@@ -17,18 +17,12 @@ export default function AddSectionModal(params){
     const departments = useStorage((state) => state.departments);
 
 
-    // Helper: Find the max years for the selected course
-    const maxYears = useMemo(() => {
-        const selectedCourseData = courses.find(c => c.name === course);
-        return selectedCourseData ? parseInt(selectedCourseData.year) : 4; // Default to 4 if nothing selected
-    }, [course, courses]);
-
     const handleAdd = () => {
-        if(!dept || !course || !year || !groupName){
+        if(!dept || !course || !sem || !groupName){
             alert("Please select all fields");
             return
         }
-        const id = `${course}-${dept}-${year}-${groupName}`;
+        const id = `${course}-${dept}-${sem}-${groupName}`;
         if (sections.find(s => s.id === id)){
             alert("Already exists");
             return;
@@ -41,7 +35,7 @@ export default function AddSectionModal(params){
         const newSection = {
             department: dept, 
             course: course,  
-            year: parseInt(year),
+            sem: parseInt(sem),
             Group: groupName,
             room: false,
             id: id,
@@ -49,7 +43,7 @@ export default function AddSectionModal(params){
         addSection(newSection);
         setDept("");
         setCourse("");
-        setYear("");
+        setSem("");
         setGroupName("");
         params.onClose();
     }
@@ -108,7 +102,7 @@ export default function AddSectionModal(params){
                                 value={course} 
                                 onChange={(e) => {
                                     setCourse(e.target.value);
-                                    setYear(""); // Reset year if course changes
+                                    setSem(""); 
                                 }}
                                 className="w-full p-3 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                             >
@@ -123,21 +117,21 @@ export default function AddSectionModal(params){
                         </div>
                     </div>
 
-                    {/* Row 2: Year Dropdown & Group Name Input */}
+                    {/* Row 2: Sem Dropdown & Group Name Input */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Year Dropdown */}
+                        {/* Sem Dropdown */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-slate-700">Year</label>
+                            <label className="text-sm font-semibold text-slate-700">Semester</label>
                             <select 
-                                value={year} 
-                                onChange={(e) => setYear(e.target.value)}
+                                value={sem} 
+                                onChange={(e) => setSem(e.target.value)}
                                 disabled={!course} // Disable until course is picked
                                 className="w-full p-3 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-slate-50 disabled:text-slate-400"
                             >
-                                <option value="" disabled>Select Year</option>
+                                <option value="" disabled>Select Sem</option>
                                 {/* SMART YEAR GENERATION */}
-                                {Array.from({ length: maxYears }, (_, i) => i + 1).map((y) => (
-                                    <option key={y} value={y}>Year {y}</option>
+                                {autoSections.map((y) => (
+                                    <option key={y.sem} value={y.sem}>{y.sem}</option>
                                 ))}
                             </select>
                         </div>

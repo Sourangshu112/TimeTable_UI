@@ -58,26 +58,9 @@ export default function Faculty() {
                         <h3 className="text-lg font-bold text-slate-800 leading-tight">
                           {faculty.name}
                         </h3>
-                        <p className="text-sm font-medium text-indigo-600">
-                          {faculty.designation}
+                        <p className="font-bold text-indigo-600">
+                          {faculty.initial}
                         </p>
-
-                        {/* 3. Bottom Row: Dept & Hours */}
-                        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-50">
-                          <div className="flex flex-col">
-                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Initials</span>
-                            <span className="text-sm text-slate-700 font-semibold">{faculty.initial}</span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Department</span>
-                            <span className="text-sm text-slate-700 font-semibold">{faculty.dept}</span>
-                          </div>
-                          <div className="w-px h-6 bg-slate-200"></div>
-                          <div className="flex flex-col">
-                            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Contact Hours</span>
-                            <span className="text-sm text-slate-700 font-semibold">{faculty.hours} hrs/week</span>
-                          </div>
-                        </div>
                       </div>
                   
                       {/* 4. Delete Action (Hidden until hover) */}
@@ -89,8 +72,10 @@ export default function Faculty() {
                 </div>
               )}
             </div>
-            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
+            <div className='flex justify-end'>
+            <div className="w-1/2 p-6 border-t border-slate-100 gap-3">
               <SaveNextButton text="Save and Next" onClick={() => router.push("TheorySubjects")} />
+            </div>
             </div>
           </div>
     

@@ -55,32 +55,16 @@ export default function TheorySubjects() {
                 >
               
                     <div className="bg-slate-50 p-4 border-b border-slate-400 flex justify-between">
+                      <div>
                       <h3 className="text-lg font-bold text-slate-800 tracking-tight">
                         {theorySubject.name}
                       </h3>
+                      <div className="flex flex-col">
+                        <span className="text-slate-700 font-medium">{theorySubject.hours} Hrs/Week</span>
+                      </div>
+                      </div>
                       <div className="top-3 left-3">
                         <DeleteButton onDelete={() => removeTheorySubject(theorySubject.id)} />
-                      </div>
-                    </div>
-                    {/* Details Grid */}
-                    <div className="p-5 grid grid-cols-2 gap-y-4 gap-x-6">
-          
-                      {/* Item 1 */}
-                      <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">CODE</span>
-                        <span className="text-slate-700 font-medium">{theorySubject.code}</span>
-                      </div>
-
-                      {/* Item 2 */}
-                      <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Department</span>
-                        <span className="text-slate-700 font-medium">{theorySubject.dept}</span>
-                      </div>
-
-                      {/* Item 4 */}
-                      <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Hrs/Week</span>
-                        <span className="text-slate-700 font-medium">{theorySubject.hours} hr</span>
                       </div>
                     </div>
                     </div>

@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import SaveNextButton from '@/app/components/save';
 import InputWithLabel from '../inputcomponent';
 import { useStorage } from '@/app/storage';
+import SemesterType from './SemesterType';
 
 
 export default function AddCourseModal(params) {
@@ -13,14 +14,14 @@ export default function AddCourseModal(params) {
     const [year, setYear] = useState(null);
     const [startingTime,setStartingTime] = useState();    
     const [slots,setSlots] = useState(null);    
-    const [slotDuration, setSlotDuration] = useState(null);
     const [lunchSlot,setLunchSlot] = useState(null);
+    const [semesterType, setSemesterType] = useState("Odd");
 
     const courses = useStorage((state) => state.courses);
     const addCourse = useStorage((state) => state.addCourse);
 
     const handleAdd = () => {
-      if (!name || !year || !startingTime || !slots || !lunchSlot || !slotDuration){
+      if (!name || !year || !startingTime || !slots || !lunchSlot){
         alert("Please enter all the fields")
         return
       }
@@ -34,8 +35,8 @@ export default function AddCourseModal(params) {
         year: year,
         startingTime: startingTime,
         slots: slots,
-        lunchSlot: lunchSlot, 
-        slotDuration: slotDuration,
+        lunchSlot: lunchSlot,
+        semesterType: semesterType,
         id: name,
       }
       
@@ -44,7 +45,6 @@ export default function AddCourseModal(params) {
       setYear(null);
       setStartingTime();
       setSlots(null);
-      setSlotDuration(null)
       setLunchSlot(null);
       params.onClose();
     }
@@ -83,12 +83,16 @@ export default function AddCourseModal(params) {
 
             <div className="grid grid-cols-2 gap-4">
                 <InputWithLabel labelName="Starting Time" type="time" onChange={(e) => setStartingTime(e.target.value)} />
-                <InputWithLabel labelName="Slot Length (hours)" type="number" placeholder="1/1.5" onChange={(e) =>setSlotDuration(e.target.value)} />
+                <SemesterType semesterType={semesterType} setSemesterType={setSemesterType} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <InputWithLabel labelName="Slots Per Day" type="number" placeholder="8" onChange={(e) => setSlots(e.target.value)}/>
                 <InputWithLabel labelName="Break Slot Number" type="number" placeholder="4" onChange={(e) => setLunchSlot(e.target.value)} />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              
             </div>
 
             <div className="pt-4">

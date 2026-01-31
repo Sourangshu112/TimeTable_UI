@@ -104,7 +104,7 @@ export default function InstitutionSetup() {
                 Institute Name
               </label>
               <InputField 
-                placeholder="Ghani Khan Chowdhury Institute of Engineering and Technology" 
+                placeholder="Type college name here" 
                 value={institution.name} // Reading from Store
                 onChange={(e) => updateInstitution('name', e.target.value)} // Writing to Store
               />

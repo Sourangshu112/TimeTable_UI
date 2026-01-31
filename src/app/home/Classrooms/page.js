@@ -30,7 +30,7 @@ export default function Classrooms() {
                         <p className="text-sm text-slate-500">Manage room allocations and linked faculty</p>
                     </div>
                 </div>
-                <AddButton text="Add Room" onClick={() => setIsModalOpen(true)} />
+                <AddButton text="ClassRoom" onClick={() => setIsModalOpen(true)} />
             </div>
 
             {/* 2. Main Content Area */}
@@ -119,8 +119,10 @@ export default function Classrooms() {
                         </div>
                     )}
                 </div>
-            <div className="p-6 border-t border-slate-100 flex justify-end gap-3">
-              <SaveNextButton text="Save and Next" onClick={() => router.push("PracticalSubjects")} />
+            <div className='flex justify-end'>
+            <div className="w-1/2 p-6 border-t border-slate-100 gap-3">
+              <SaveNextButton text="Save and Next" onClick={() => router.push("TheorySubjects")} />
+            </div>
             </div>
             </div>
 
