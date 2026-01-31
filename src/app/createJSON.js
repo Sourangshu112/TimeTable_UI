@@ -1,34 +1,44 @@
 import { useStorage } from "./storage"; 
 
-// Add 'export' here
-export const exportToJson = () => {
+// Update this to your actual Django API URL
+const API_ENDPOINT = ""; 
+
+export const exportToJson = async () => {
   const state = useStorage.getState();
 
+  // 1. Prepare the data exactly as before
   const data = {
     institution: state.institution,
     course: state.course,
-    department: state.department,
+    departments: state.department,
     faculty: state.faculty,
     theorySubjects: state.theorySubjects,
     practicalSubjects: state.practicalSubjects,
-    section: [...state.autoSections, ...state.sections], 
+    sections: [...state.autoSections, ...state.sections], 
     classrooms: state.classrooms,
     labrooms: state.labrooms,
   };
 
-  downloadJson(data, 'my-app-state.json'); // Note: changed exportData to data to match your variable
-};
+  try {
+    // 2. Send the POST request
+    const response = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-// Internal helper
-const downloadJson = (data, filename) => {
-  const jsonString = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log("Success:", result);
+    alert("Data sent to backend successfully!");
+
+  } catch (error) {
+    console.error("Failed to send data:", error);
+    alert("Failed to send data. Check console for details.");
+  }
 };
